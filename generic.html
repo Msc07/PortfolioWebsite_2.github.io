@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>SQL PROJECT 1</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg"alt="" /></span><span class="title">Home</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+				<!--Menu-->
+				<nav id="menu">
+					<h2>Menu</h2>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+					</ul>
+				</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQL PROJECT 1</h1>
+							<span class="image main"><img src="https://th.bing.com/th/id/R.4a0b1baaf88c54c17d2a7c49d8784327?rik=WzSbI9OS51%2bUeA&riu=http%3a%2f%2fimages.clipartpanda.com%2fmovie-clipart-Film-movie-clipart-best.jpeg&ehk=R%2fcKKBuIBEuU%2fKt3TCR%2b13cS0Xre6TZ7fKNcy4DasWQ%3d&risl=&pid=ImgRaw&r=0"alt="" /></span>
+							<p>There are many good genres in movies. I wonder what genre is used the most? Dataset is from the <a href="https://www.kaggle.com/datasets/whenamancodes/popular-movies-datasets-9000-movies">Popular Movies Dataset</a>. I was able to use the COUNT and GROUP BY function so that I can see how many times these genres appear in the dataset.</p>
+							<p>SELECT COUNT(genres) AS Number, genres<br>
+							FROM movies.movies<br>
+							GROUP BY genres<br>
+							LIMIT 5</p>
+							<pre>Row	Number	 genres
+1	 4        War
+2	 12       Crime
+3	 1053     Drama
+4	 60       Action
+5	 946      Comedy</p></pre>
+<p>I had some trouble finding the max Number since the Number column is an alias. 
+	I wonder if there is another way to be able to find the max given the COUNT function?
+	For now I used a subquery.</p>
+	<p>SELECT MAX(Number)<br>
+		FROM (SELECT COUNT(genres) AS Number, genres<br>
+		FROM movies.movies<br>
+		GROUP BY genres)</p>
+		<pre>Row	 f0_	
+1	1053</p></pre>
+			<p>Then, I was able to use the WHERE function to find which genre gives me 1053.</p>
+			<p>SELECT Number, genres<br>
+				FROM (SELECT COUNT(genres) AS Number, genres<br>
+				FROM movies.movies<br>
+				GROUP BY genres)<br>
+				WHERE Number = 1053</p>
+				<pre>Row    Number   genres	
+1	1053    Drama</p></pre>
+					<p>Drama is the genre that appears the most in this dataset.</p>
+					<p>Continuing with the movie dataset. There was another table with ratings by users. First, I needed to join the two tables using LEFT JOIN.</p>
+					<p>SELECT movies_table.movieId, movies_table.title, movies_table.genres, ratings_table.movieId, ratings_table.rating<br>
+						FROM movies.movies AS movies_table<br>
+						LEFT JOIN movies.ratings AS ratings_table<br>
+						ON movies_table.movieId = ratings_table.movieId<br>
+						LIMIT 2</p>
+					<pre>Row	movieId	  title	            genres movieId_1 rating	
+1	  2669  Pork Chop Hill (1959) War    2669     3.0
+2	  2669  Pork Chop Hill (1959) War    2669     4.0</p></pre>
+						<p>One thing to note is the importance of understanding your dataset. 
+							Unfortunately, I made the mistake of not understading that this was ratings based on users.
+							I wanted to confirm by checking on the ratings table. </p>
+						<pre>Row	userId	movieId	rating
+1	 384     2669    3.0
+2	 422     2669    4.0</p></pre>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/Msc07" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									
+									<li><a href="https://www.linkedin.com/in/marthascoronel/" class="icon brands style2 fa-linkedin"><span class="label">Linkedin</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
